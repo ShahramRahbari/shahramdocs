@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="fa">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="dark" name="color-scheme"/>
+<title>آیا گوگل میفهمه متن با AI نوشته شده؟ مسیر SynthID تا AGC و RankEmbed در اسناد</title>
+<meta content="تحقیقی مستندمحور درباره اینکه گوگل چه چیزهایی را درباره محتوای AI واقعا میتواند تشخیص یا ارزیابی کند، از SynthID و AGC تا contentEffort، OriginalContentScore، RankEmbed و اسناد دادگاه." name="description"/>
+<!-- TODO، URL نهایی رو جایگزین کنید -->
+<link href="https://REPLACE-WITH-FINAL-URL/" rel="canonical"/>
+<meta content="article" property="og:type"/>
+<meta content="fa_IR" property="og:locale"/>
+<meta content="آیا گوگل میفهمه متن با AI نوشته شده؟ مسیر SynthID تا AGC و RankEmbed در اسناد" property="og:title"/>
+<meta content="از Watermark واقعی Gemini تا AGC، effort estimation، originality و مدل Ranking که از امتیاز ارزیاب انسانی یاد میگیرد." property="og:description"/>
+<meta content="https://REPLACE-WITH-FINAL-URL/" property="og:url"/>
+<meta content="https://REPLACE-WITH-FINAL-URL/shahram-rahbari.jpg" property="og:image"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "آیا گوگل میفهمه متن با AI نوشته شده؟ مسیر SynthID تا AGC و RankEmbed در اسناد",
+  "inLanguage": "fa",
+  "datePublished": "2026-08-26",
+  "author": {
+    "@type": "Person",
+    "name": "شهرام رهبری",
+    "jobTitle": "تحلیلگر سئو",
+    "sameAs": [
+      "https://t.me/ShahramRahbari",
+      "https://www.linkedin.com/in/shahramrahbari"
+    ]
+  }
+}
+</script>
+<style>
+:root{
+  --bg:#121416;
+  --bg-2:#171a1d;
+  --panel:#1b1f22;
+  --panel-2:#202528;
+  --line:#2c3337;
+  --line-soft:#252b2f;
+  --ink:#e6e2d8;
+  --ink-soft:#b2aea4;
+  --ink-dim:#8b8880;
+  --petrol:#5aa6a6;
+  --petrol-deep:#1e3f42;
+  --oxide:#c9663a;
+  --copper:#d59a55;
+  --moss:#8aa46a;
+  --bone:#efeadf;
+  --violet:#8f86c4;
+
+  --radius:14px;
+  --maxw:74ch;
+  --gap: clamp(1.6rem, 4vw, 2.6rem);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *{animation:none!important;transition:none!important}
+}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:Vazirmatn,"Segoe UI","Noto Naskh Arabic",Tahoma,system-ui,sans-serif;
+  font-size:clamp(16px,1rem + .2vw,18px);
+  line-height:2.05;
+  font-weight:400;
+  overflow-x:hidden;
+  background-image:
+    radial-gradient(60rem 30rem at 100% -10%, rgba(90,166,166,.07), transparent 60%),
+    radial-gradient(50rem 26rem at 0% 8%, rgba(201,102,58,.06), transparent 60%);
+  background-repeat:no-repeat;
+}
+img{max-width:100%;height:auto;display:block}
+svg{max-width:100%;height:auto}
+a{color:var(--petrol);text-underline-offset:.28em;text-decoration-thickness:1px}
+a:hover{color:var(--copper)}
+:focus-visible{outline:2px solid var(--copper);outline-offset:3px;border-radius:4px}
+
+.en{direction:ltr;unicode-bidi:isolate;font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;font-size:.94em;letter-spacing:.01em}
+code.en{background:var(--panel-2);border:1px solid var(--line);padding:.1em .42em;border-radius:6px;color:var(--copper)}
+
+.wrap{width:min(100% - 2.2rem, 68rem);margin-inline:auto}
+.col{width:min(100%, var(--maxw));margin-inline:auto}
+
+/* progress */
+#bar{position:fixed;top:0;inset-inline:0;height:3px;background:transparent;z-index:60}
+#bar > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--petrol),var(--copper));}
+
+/* header */
+.topbar{position:sticky;top:0;z-index:50;background:rgba(18,20,22,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line-soft)}
+.topbar .wrap{display:flex;align-items:center;gap:1rem;justify-content:space-between;min-height:54px}
+.brandmark{display:flex;align-items:center;gap:.55rem;font-weight:700;font-size:.95rem;color:var(--ink);text-decoration:none}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--oxide);flex:0 0 auto}
+.topnav{font-size:.85rem;color:var(--ink-dim)}
+
+/* hero */
+.hero{padding:clamp(2.6rem,8vw,5rem) 0 clamp(1.6rem,4vw,2.4rem)}
+.kicker{display:inline-flex;align-items:center;gap:.5rem;font-size:.78rem;letter-spacing:.06em;color:var(--petrol);border:1px solid var(--petrol-deep);background:rgba(90,166,166,.07);padding:.34rem .8rem;border-radius:999px;margin-bottom:1.2rem}
+h1{
+  font-size:clamp(1.75rem,4.6vw,3rem);
+  line-height:1.42;font-weight:800;margin:0 0 1rem;letter-spacing:-.01em;color:var(--bone)
+}
+.lede{font-size:clamp(1.02rem,1.4vw,1.18rem);color:var(--ink-soft);margin:0 0 1.6rem;max-width:62ch;line-height:1.95}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem .9rem;font-size:.82rem;color:var(--ink-dim);border-top:1px solid var(--line-soft);padding-top:1.1rem}
+.meta span{display:inline-flex;align-items:center;gap:.4rem}
+
+/* generic */
+main{padding-bottom:4rem}
+section{margin-block:var(--gap)}
+h2{font-size:clamp(1.35rem,2.9vw,1.85rem);line-height:1.55;font-weight:800;color:var(--bone);margin:2.6rem 0 .9rem;letter-spacing:-.005em}
+h2 .num{color:var(--oxide);font-size:.72em;margin-inline-end:.5rem;font-weight:700}
+h3{font-size:clamp(1.08rem,2vw,1.25rem);line-height:1.7;font-weight:700;color:var(--bone);margin:2rem 0 .6rem}
+p{margin:0 0 1.05rem}
+ul,ol{padding-inline-start:1.3rem;margin:0 0 1.15rem}
+li{margin-bottom:.55rem}
+strong{color:var(--bone);font-weight:700}
+hr{border:0;border-top:1px solid var(--line-soft);margin:2.6rem 0}
+
+/* evidence badges */
+.badge{display:inline-flex;align-items:center;gap:.38rem;font-size:.72rem;font-weight:700;padding:.16rem .6rem;border-radius:999px;border:1px solid;white-space:nowrap;line-height:1.9;vertical-align:middle}
+.b-doc{color:#7fc4c4;border-color:#2b5a5c;background:rgba(90,166,166,.1)}
+.b-res{color:#a79dd8;border-color:#413c66;background:rgba(143,134,196,.1)}
+.b-inf{color:var(--copper);border-color:#6a4c26;background:rgba(213,154,85,.1)}
+.b-op{color:#9fbb7c;border-color:#43542f;background:rgba(138,164,106,.1)}
+.badge::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+
+.legend{border:1px solid var(--line);background:var(--panel);border-radius:var(--radius);padding:1.1rem 1.2rem;margin:1.6rem 0}
+.legend ul{list-style:none;padding:0;margin:.7rem 0 0;display:grid;gap:.55rem}
+.legend li{margin:0;font-size:.9rem;color:var(--ink-soft)}
+
+/* TL;DR */
+.tldr{border:1px solid var(--line);border-inline-start:3px solid var(--oxide);background:linear-gradient(180deg,var(--panel-2),var(--panel));border-radius:var(--radius);padding:clamp(1.1rem,3vw,1.8rem)}
+.tldr h2{margin-top:0}
+.tldr ol{counter-reset:t;list-style:none;padding:0;margin:0}
+.tldr ol li{counter-increment:t;position:relative;padding-inline-start:2.2rem;margin-bottom:1rem;font-size:.97rem}
+.tldr ol li::before{content:counter(t);position:absolute;inset-inline-start:0;top:.35rem;width:1.6rem;height:1.6rem;border-radius:50%;background:var(--petrol-deep);color:#9fd4d4;font-size:.78rem;font-weight:700;display:grid;place-items:center;line-height:1}
+
+/* cards */
+.card{border:1px solid var(--line);background:var(--panel);border-radius:var(--radius);padding:1.1rem 1.2rem;margin:1.5rem 0}
+.card .label{display:inline-block;font-size:.74rem;font-weight:700;letter-spacing:.03em;padding:.2rem .65rem;border-radius:999px;margin-bottom:.7rem}
+.card p:last-child{margin-bottom:0}
+.c-example{border-inline-start:3px solid var(--copper)}
+.c-example .label{background:rgba(213,154,85,.14);color:var(--copper)}
+.c-mean{border-inline-start:3px solid var(--petrol)}
+.c-mean .label{background:rgba(90,166,166,.14);color:#8fd0d0}
+.c-stop{border-inline-start:3px solid var(--oxide)}
+.c-stop .label{background:rgba(201,102,58,.14);color:#e08b60}
+.c-note{border-inline-start:3px solid var(--violet)}
+.c-note .label{background:rgba(143,134,196,.14);color:#a79dd8}
+
+blockquote{margin:1.5rem 0;padding:.2rem 1.1rem;border-inline-start:2px solid var(--line);color:var(--ink-soft);font-size:.96rem}
+
+/* refs */
+sup.ref{font-size:.68em;vertical-align:super;line-height:0}
+sup.ref a{text-decoration:none;background:var(--panel-2);border:1px solid var(--line);border-radius:5px;padding:.05em .34em;color:var(--petrol);font-weight:700}
+sup.ref a:hover{background:var(--petrol-deep);color:var(--bone)}
+
+/* figure */
+figure{margin:2.2rem 0;padding:1.2rem 1rem 1rem;border:1px solid var(--line);background:var(--bg-2);border-radius:var(--radius)}
+figure .fig-in{max-width:460px;margin-inline:auto}
+figcaption{font-size:.82rem;color:var(--ink-dim);margin-top:1rem;line-height:1.85;border-top:1px solid var(--line-soft);padding-top:.8rem}
+figcaption b{color:var(--ink-soft)}
+
+/* TOC */
+.toc{border:1px solid var(--line);background:var(--panel);border-radius:var(--radius);margin:2rem 0;overflow:hidden}
+.toc summary{cursor:pointer;padding:.95rem 1.1rem;font-weight:700;font-size:.95rem;color:var(--bone);list-style:none;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.toc summary::-webkit-details-marker{display:none}
+.toc summary::after{content:"+";color:var(--oxide);font-weight:800}
+.toc[open] summary::after{content:"–"}
+.toc ol{margin:0;padding:0 1.1rem 1.1rem 1.1rem;list-style:none;counter-reset:c}
+.toc ol li{counter-increment:c;margin:0;border-top:1px solid var(--line-soft)}
+.toc ol li a{display:block;padding:.6rem 0;font-size:.92rem;color:var(--ink-soft);text-decoration:none}
+.toc ol li a::before{content:counter(c) ".";color:var(--oxide);font-weight:700;margin-inline-end:.5rem}
+.toc ol li a:hover{color:var(--copper)}
+
+/* table */
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1.6rem 0;border:1px solid var(--line);border-radius:var(--radius)}
+table{border-collapse:collapse;width:100%;min-width:34rem;font-size:.9rem}
+th,td{text-align:start;padding:.75rem .9rem;border-bottom:1px solid var(--line-soft);vertical-align:top}
+th{background:var(--panel-2);color:var(--bone);font-weight:700;font-size:.85rem}
+tr:last-child td{border-bottom:0}
+
+/* CTA */
+.cta{border:1px solid var(--petrol-deep);background:linear-gradient(135deg,rgba(30,63,66,.55),var(--panel));border-radius:var(--radius);padding:clamp(1.2rem,3vw,1.8rem);margin:2.6rem 0}
+.cta h3{margin-top:0}
+.cta p{color:var(--ink-soft);font-size:.95rem}
+.btns{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1rem}
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.62rem 1.1rem;border-radius:10px;font-size:.9rem;font-weight:700;text-decoration:none;border:1px solid var(--line);color:var(--ink);background:var(--panel-2);min-height:44px}
+.btn:hover{border-color:var(--copper);color:var(--copper)}
+.btn-primary{background:var(--oxide);border-color:var(--oxide);color:#160d08}
+.btn-primary:hover{background:var(--copper);border-color:var(--copper);color:#160d08}
+
+/* author */
+.author{border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);padding:clamp(1.2rem,3vw,2rem);margin:2.4rem 0}
+.author-head{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.2rem}
+.avatar{width:88px;height:88px;border-radius:50%;object-fit:cover;border:2px solid var(--petrol-deep);flex:0 0 auto;background:var(--panel-2)}
+.author-head .who{min-width:12rem}
+.author-head .who b{display:block;font-size:1.1rem;color:var(--bone)}
+.author-head .who span{font-size:.85rem;color:var(--ink-dim)}
+.author blockquote{border-inline-start:2px solid var(--oxide);font-size:1rem;color:var(--ink)}
+
+/* not-proven */
+.notproven{border:1px solid var(--oxide);background:rgba(201,102,58,.06);border-radius:var(--radius);padding:clamp(1.1rem,3vw,1.7rem)}
+.notproven h2{margin-top:0}
+.notproven ul{list-style:none;padding:0}
+.notproven li{position:relative;padding-inline-start:1.7rem;font-size:.95rem}
+.notproven li::before{content:"×";position:absolute;inset-inline-start:0;top:0;color:var(--oxide);font-weight:800;font-size:1.05rem}
+
+/* sources */
+.srcgroup{margin:1.8rem 0}
+.srcgroup h3{font-size:.95rem;color:var(--petrol);text-transform:none;margin-bottom:.6rem;border-bottom:1px solid var(--line-soft);padding-bottom:.4rem}
+.srclist{list-style:none;padding:0;margin:0}
+.srclist li{display:flex;gap:.75rem;align-items:flex-start;padding:.85rem 0;border-bottom:1px solid var(--line-soft);font-size:.88rem;line-height:1.8;margin:0}
+.srclist li:last-child{border-bottom:0}
+.srclist .n{flex:0 0 1.9rem;font-weight:700;color:var(--oxide);text-align:start;padding-top:.1rem}
+.srclist .body{flex:1 1 auto;min-width:0}
+.srclist .ttl{display:block;color:var(--bone);font-weight:700;font-size:.95em;line-height:1.7;margin-bottom:.25rem;text-align:start;overflow-wrap:anywhere}
+.srclist .ttl-en{direction:ltr;unicode-bidi:isolate;text-align:right}
+.srclist .p{display:block;color:var(--ink-dim);font-size:.86em;text-align:start;margin-bottom:.25rem}
+.srclist a.u{display:block;word-break:break-all;font-size:.82em;direction:ltr;unicode-bidi:isolate;text-align:right}
+.backref{font-size:.78em;color:var(--ink-dim);text-decoration:none;margin-inline-start:.3rem}
+:target{scroll-margin-top:80px}
+.srclist li:target{background:rgba(90,166,166,.08);border-radius:8px;padding-inline:.5rem}
+
+footer{border-top:1px solid var(--line-soft);padding:2.2rem 0 3.4rem;color:var(--ink-dim);font-size:.85rem}
+footer a{color:var(--ink-soft)}
+
+#totop{position:fixed;inset-inline-end:1rem;bottom:1rem;width:46px;height:46px;border-radius:50%;background:var(--panel-2);border:1px solid var(--line);color:var(--ink-soft);display:none;place-items:center;text-decoration:none;z-index:55}
+#totop.on{display:grid}
+#totop:hover{border-color:var(--copper);color:var(--copper)}
+
+/* RTL / LTR readability */
+.en{
+  direction:ltr;
+  unicode-bidi:isolate;
+  font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+  font-size:.94em;
+  letter-spacing:.01em;
+}
+.doc-quote{
+  direction:ltr;
+  unicode-bidi:isolate;
+  text-align:left;
+  overflow-wrap:anywhere;
+  margin:.8rem 0 1.25rem;
+  padding:.72rem .95rem;
+  border-inline-start:3px solid var(--petrol);
+  background:var(--panel-2);
+  border-radius:8px;
+  color:var(--bone);
+  font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+  font-size:.92em;
+  line-height:1.75;
+}
+.srcgroup .ttl-en{
+  display:block;
+  direction:ltr;
+  unicode-bidi:isolate;
+  text-align:left;
+  overflow-wrap:anywhere;
+  line-height:1.65;
+}
+.srcgroup a.u{
+  direction:ltr;
+  unicode-bidi:isolate;
+  text-align:left;
+}
+@media (max-width:640px){
+  .doc-quote{
+    font-size:.86em;
+    line-height:1.8;
+    padding:.7rem .8rem;
+  }
+}
+
+/* final text readability */
+article code.en{
+  direction:ltr;
+  unicode-bidi:isolate;
+  display:inline-block;
+  max-width:100%;
+  overflow-wrap:anywhere;
+  background:var(--panel-2);
+  border:1px solid var(--line);
+  padding:.08em .38em;
+  border-radius:6px;
+  color:var(--copper);
+  font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+}
+article h2[id]{scroll-margin-top:80px}
+</style>
+</head>
+<body>
+<div aria-hidden="true" id="bar"><i></i></div>
+<header class="topbar">
+<div class="wrap">
+<a class="brandmark" href="#top"><span aria-hidden="true" class="dot"></span> شهرام رهبری</a>
+<span class="topnav">تحقیق مبتنی بر سند</span>
+</div>
+</header>
+<main id="top">
+<article>
+<div class="wrap">
+<div class="col">
+<div class="hero">
+<span class="kicker">تحقیق مبتنی بر سند</span>
+<h1>آیا گوگل میفهمه متن با AI نوشته شده؟ مسیر SynthID تا AGC و RankEmbed در اسناد</h1>
+<p class="lede">این روزا درباره تشخیص محتوای AI یه جواب زیاد میشنوم، Detectorها نمیتونن بفهمن، پس گوگل هم نمیتونه بفهمه. این بار رفتم سراغ خود اسناد گوگل، Leak، Patentها، پژوهش و اسناد دادگاه.</p>
+<div class="meta">
+<span>زمان مطالعه حدود ۲۸ دقیقه</span>
+<span>نوع، بررسی Research، Leak، اسناد دادگاه و Patent</span>
+<span>آخرین بروزرسانی، مرداد ۱۴۰۵</span>
+<span>SR-DOC 2026-08-26 / AIC-01</span></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p>این روزا درباره تشخیص محتوای AI یه جواب زیاد میشنوم.</p>
+<p>«Detectorها نمیتونن بفهمن، پس گوگل هم نمیتونه بفهمه.»</p>
+<p>من قبلا خود Detectorهای متن AI رو جدا بررسی کردم. این بار رفتم سراغ خود گوگل.</p>
+<p>Research، فایل های Leak شده Search، Patentها و اسناد دادگاه.</p>
+<p>هرچی جلوتر رفتم، بیشتر دیدم مشکل از خود سوال شروع میشه.</p>
+<p>«گوگل میفهمه AI نوشته یا نه» چند تا موضوع متفاوت رو یکی میکنه.</p>
+<p>کل ارزش این تحقیق برای من در جدا کردن همین چند موضوع از همه.</p>
+<p>هر جا سند داریم، همونقدر جلو میرم.</p>
+<p>هر جا تفسیر منه، میگم تفسیر منه.</p>
+<p>هر جا هم نمیدونیم، با اسم یه Field داستان نمیسازم.</p>
+<h2>فهرست مطالب 11</h2>
+<ol>
+<li>اول جواب کوتاه، گوگل چه چیزی رو واقعا میتونه تشخیص بده</li>
+<li>فناوری SynthID، اینجا دیگه تشخیص واقعی داریم</li>
+<li>داخل Search، racterScores و AGC</li>
+<li>سیگنال های مربوط به Effort و Originality</li>
+<li>از قضاوت انسان تا مدل های رتبه بندی</li>
+<li>درباره Gemini، جهت فلش رو برعکس نکنیم</li>
+<li>چرا Policy روی AI بودن قفل نشده</li>
+<li>قبل از چت بات ها، بازنویسی چند سایت تولید محتوای درست نبود</li>
+<li>غنی کردن محتوا از چیزی که خود گوگل گفته</li>
+<li>لینک سازی داخلی، چیزی که سند داریم و چیزی که من انجام میدم</li>
+<li>جواب نهایی و چیزهایی که این تحقیق ثابت نمیکنه</li>
+</ol>
+<h2>اگه وقت نداری، همین ها رو بخون</h2>
+<p>سند عمومی پیدا نکردم که Google Search روی هر صفحه وب یه Detector اجرا کنه و آخرش بگه AI نوشته یا انسان.</p>
+<p>برای خروجی های Watermark شده خود گوگل داستان فرق میکنه. SynthID-Text بعد از آزمایش روی نزدیک 20 میلیون پاسخ Gemini وارد Production شده و سازوکار Detection اون هم در پژوهش نیچر مستند شده. <sup class="ref"><a href="#r16">16</a></sup></p>
+<p>داخل مستندات Leak شده Search فیلدی به اسم racterScores داریم که توضیحش دقیقا اینه. <sup class="ref"><a href="#r4">4</a></sup></p>
+<div class="doc-quote" dir="ltr">Site-level AGC classification score</div>
+<p>AGC تو Documentation عمومی باز نشده. منم قرار نیست حدس بزنم مخفف چیه.</p>
+<p>یه Field دیگه به اسم contentEffort داریم. توضیحش اینه. <sup class="ref"><a href="#r5">5</a></sup></p>
+<div class="doc-quote" dir="ltr">LLM-based effort estimation for article pages</div>
+<p>OriginalContentScore هم جدا وجود داره. <sup class="ref"><a href="#r3">3</a></sup></p>
+<p>در رای مرحله Remedies دادگاه، RankEmbed و RankEmbedBERT به عنوان Ranking Model معرفی شدن. یکی از منابع داده این مدل ها Scoreهایی بوده که Human Raterها برای سنجش کیفیت نتایج ارگانیک تولید کردن. <sup class="ref"><a href="#r7">7</a></sup></p>
+<p>یه ایمیل داخلی گوگل هم در اسلایدهای شهادت کارشناس Plaintiffs نقل شده که استفاده از Search Signals و سیگنال های Low Quality برای Gemini Pretraining رو نشون میده. <sup class="ref"><a href="#r20">20</a></sup></p>
+<p>جهت رابطه اینه:</p>
+<div class="doc-quote" dir="ltr">Search Signals → Gemini Pretraining</div>
+<p>نه برعکس.</p>
+<p>نتیجه عملی برای من؟</p>
+<p>استراتژی «Detector منو نگرفت، پس گوگل هم نمیفهمه» پایه محکمی نداره.</p>
+<hr/>
+<h2 id="s1">1. اول جواب کوتاه، گوگل چه چیزی رو واقعا میتونه تشخیص بده</h2>
+<p>من این تحقیق رو با یه سوال شروع کردم.</p>
+<p>گوگل از کجا میفهمه یه متن رو AI نوشته؟</p>
+<p>الان فکر میکنم قبل از جواب دادن باید مشخص کنیم منظور از «میفهمه» چیه.</p>
+<p>اگه منظورت اینه که Google Search روی هر صفحه کراول شده یه Detector عمومی اجرا میکنه و جواب میده «این رو چت جی پی تی یا کلاد نوشته»، سند عمومی برای این ادعا پیدا نکردم.</p>
+<p>ولی یه سوال دیگه جوابش مشخص تره.</p>
+<p>آیا گوگل اصلا فناوری عملیاتی برای شناسایی متن تولیدشده با مدل داره؟</p>
+<p>بله.</p>
+<p>برای خروجی های Watermark شده خودش سند داریم.</p>
+<p>بعد یه نکته مهم تر باز میشه.</p>
+<p>Search شاید اصلا لازم نداشته باشه اول بفهمه نویسنده آدم بوده یا ماشین.</p>
+<p>تو Leak یه Classification Score در سطح سایت داریم.</p>
+<p>یه تخمین Effort در سطح صفحه داریم.</p>
+<p>OriginalContentScore هم داریم.</p>
+<p>بعد به RankEmbed میرسیم که Human Rater Scores یکی از منابع داده اش بوده.</p>
+<p>اینا یه سیستم نیستن.</p>
+<p>حتی سندی ندارم که بگم به یه Pipeline واحد وصلن.</p>
+<p>پس دو سوال رو یکی نکنیم.</p>
+<p>«گوگل فناوری تشخیص متن AI داره» با «Google Search همین Detector رو روی همه صفحات وب برای Ranking اجرا میکنه» دو ادعای جداست.</p>
+<p>اولی برای SynthID مستند شده.</p>
+<p>دومی هنوز سند عمومی نداره.</p>
+<p>تحقیق قبلی من درباره Detectorها و محدودیت تشخیص AI از روی متن مفصل تره:</p>
+<p><a href="https://shahramdocs.com/articles/ai-generated-text-detection">https://shahramdocs.com/articles/ai-generated-text-detection</a></p>
+<hr/>
+<h2 id="s2">2. فناوری SynthID، اینجا دیگه تشخیص واقعی داریم</h2>
+<h3>پژوهش</h3>
+<p>مقاله نیچر درباره SynthID-Text فقط یه Proposal آزمایشگاهی نیست.</p>
+<p>دیپ مایند این روش رو روی نزدیک 20 میلیون پاسخ Gemini آزمایش کرده و مقاله میگه نسخه Non-distortionary این Watermark بعدا وارد Production شده و روی پاسخ های Gemini و Gemini Advanced Watermark میذاره. <sup class="ref"><a href="#r16">16</a></sup></p>
+<p>روش کارش هم با Detectorهای رایج فرق داره.</p>
+<p>اینجا سیستم بعد از تولید متن از روی سبک نوشتن حدس نمیزنه AI نوشته یا نه.</p>
+<p>موقع تولید Token یه سیگنال آماری داخل Output قرار میگیره.</p>
+<p>Detection بعدا دنبال همون سیگنال میگرده و برای آشکارسازی هم به خود LLM نیاز نداره. <sup class="ref"><a href="#r16">16</a></sup></p>
+<p>یعنی اینجا یه سیگنال واقعی تو متن هست که میشه دنبالش گشت.</p>
+<h3>پرونده های SynthID رو از کجا میشه خوند</h3>
+<p>خود مقاله نیچر تو قسمت Competing Interests سه Patent Application مرتبط با SynthID-Text رو معرفی کرده.</p>
+<div class="doc-quote" dir="ltr">EP23162983.3</div>
+<div class="doc-quote" dir="ltr">PCT/EP2024/057423</div>
+<div class="doc-quote" dir="ltr">US18/611,417</div>
+<p>این مهمه.</p>
+<p>ارتباط این پرونده ها با SynthID برداشت من از شباهت فنی نیست. خود مقاله گفته مرتبط هستن. <sup class="ref"><a href="#r16">16</a></sup></p>
+<p>نسخه های منتشرشده شون رو با این شماره ها میشه خوند:</p>
+<div class="doc-quote" dir="ltr">EP4435640A1</div>
+<p><a href="https://patents.google.com/patent/EP4435640A1/en">https://patents.google.com/patent/EP4435640A1/en</a></p>
+<div class="doc-quote" dir="ltr">WO2024194341A1</div>
+<p><a href="https://patents.google.com/patent/WO2024194341A1/en">https://patents.google.com/patent/WO2024194341A1/en</a></p>
+<div class="doc-quote" dir="ltr">US20240320529A1</div>
+<p><a href="https://patents.google.com/patent/US20240320529A1/en">https://patents.google.com/patent/US20240320529A1/en</a></p>
+<p>پرونده اروپایی Applicationه، Grant نیست و هنوز Pendingه.</p>
+<p>Google Patents هم الان GDM Holding LLC رو به عنوان Current Assignee نشون میده. <sup class="ref"><a href="#r17">17</a></sup></p>
+<h3>پس گوگل میتونه بفهمه؟</h3>
+<p>برای متنی که با سیستم Watermark شده خودش تولید شده، بله.</p>
+<p>Watermarking در Productionه و روش Detection هم مستند و ارزیابی شده.</p>
+<p>ولی اینجا باید ترمز کنیم.</p>
+<p>از SynthID نمیشه نتیجه گرفت Google Search کل وب رو با همین روش بررسی میکنه.</p>
+<p>متنی که اصلا این Watermark رو نداشته یا سیگنالش از بین رفته، مسئله دیگه ایه.</p>
+<p>من سندی پیدا نکردم که بگه Search هنگام Crawl یا Ranking، Detector مربوط به SynthID رو روی کل وب اجرا میکنه.</p>
+<hr/>
+<h2 id="s3">3. داخل Search، racterScores و AGC</h2>
+<p>بعد از SynthID رفتم سراغ چیزی که برای SEO مهم تره.</p>
+<p>داخل داده های Search چیزی داریم که به Classification نزدیک باشه؟</p>
+<p>داریم.</p>
+<h3>مستند</h3>
+<p>داخل QualityNsrNsrData فیلدی به اسم racterScores هست. <sup class="ref"><a href="#r4">4</a></sup></p>
+<p>توضیحش دقیقا اینه:</p>
+<div class="doc-quote" dir="ltr">Site-level AGC classification score</div>
+<p>بعدش هم Documentation به یه لینک داخلی با اسم go/project-racter-overview اشاره میکنه.</p>
+<p>این حداکثر چیزیه که سند بهمون میده.</p>
+<p>یه Classification Score با برچسب AGC در سطح Site وجود داشته.</p>
+<p>خود Field هم Versioned Float Signalه.</p>
+<p>AGC یعنی چی؟</p>
+<p>نمیدونیم.</p>
+<p>Documentation عمومی مخففش رو باز نکرده.</p>
+<p>برای همین من AGC رو Artificially Generated Content یا «امتیاز محتوای AI» ترجمه نمیکنم.</p>
+<p>مدلش چی بوده؟</p>
+<p>نمیدونیم.</p>
+<p>Featureهاش چی بودن؟</p>
+<p>نمیدونیم.</p>
+<p>Threshold داشته یا نه؟</p>
+<p>نمیدونیم.</p>
+<p>امروز کجا و چطور استفاده میشه؟</p>
+<p>این رو هم نمیدونیم.</p>
+<p>و یه چیزی که تو بررسی Leak باید همیشه جلو چشممون باشه.</p>
+<p>وجود یه Field سه چیز رو به تنهایی ثابت نمیکنه.</p>
+<p>معنی کاملش رو ثابت نمیکنه.</p>
+<p>استفاده فعلیش رو ثابت نمیکنه.</p>
+<p>وزنش در Ranking رو هم ثابت نمیکنه.</p>
+<p>اسم Field توضیح عملکرد Field نیست.</p>
+<p>این جمله رو به نظرم باید موقع خوندن کل Leak کنار دستمون بذاریم.</p>
+<p>تفسیر من فقط تا اینجاست.</p>
+<p>بعد از دیدن racterScores دیگه نمیشه با اطمینان گفت «Google هیچ Classification مرتبطی در سطح سایت نداره».</p>
+<p>یه AGC Classification Score تو مستندات دیده میشه.</p>
+<p>بیشتر از این فعلا سند نداریم.</p>
+<hr/>
+<h2 id="s4">4. سیگنال های مربوط به Effort و Originality</h2>
+<p>اینجا سوال برای من یه بار دیگه تغییر کرد.</p>
+<p>شاید Search اصلا لازم نداشته باشه اول جواب بده «انسان نوشته یا AI».</p>
+<h3>contentEffort</h3>
+<p>داخل QualityNsrPQData یه Field به اسم contentEffort داریم. <sup class="ref"><a href="#r5">5</a></sup></p>
+<p>توضیح دقیقش اینه:</p>
+<div class="doc-quote" dir="ltr">LLM-based effort estimation for article pages</div>
+<p>یعنی یه LLM برای تخمین چیزی به اسم Effort روی صفحات مقاله ای تعریف شده.</p>
+<p>همین.</p>
+<p>از این جمله نمیشه فهمید منظور گوگل از Effort دقیقا چیه.</p>
+<p>«میزان تلاش انسان»؟</p>
+<p>سند نگفته.</p>
+<p>«هزینه تولید محتوا»؟</p>
+<p>سند نگفته.</p>
+<p>«احتمال AI بودن متن»؟</p>
+<p>باز هم سند نگفته.</p>
+<h3>یه نکته فنی درباره contentEffort</h3>
+<p>داخل CompressedQualitySignals فیلدی به اسم pqDataProto هست.</p>
+<p>توضیح خود Field میگه اینجا Stripped page-level signals قرار دارن که داخل pq_data نیستن. <sup class="ref"><a href="#r6">6</a></sup></p>
+<p>از اون طرف عبارت Preliminary Scoring در توضیح کل Message اومده، نه مشخصا کنار contentEffort.</p>
+<p>برای همین نمیشه از این ساختار نتیجه گرفت contentEffort حتما تو Preliminary Scoring مصرف میشه.</p>
+<p>این شاید جزئی به نظر برسه.</p>
+<p>نیست.</p>
+<p>دقیقا همین جاهاست که یه خط Documentation تبدیل میشه به یه داستان کامل درباره Ranking.</p>
+<p>من برای اون داستان سند ندارم.</p>
+<h3>OriginalContentScore</h3>
+<p>داخل PerDocData یه Field جدا هم داریم:</p>
+<div class="doc-quote" dir="ltr">OriginalContentScore</div>
+<p>Documentation میگه مقدار اصلی این Score از 0 تا 512ه، به شکل 7 بیتی ذخیره میشه و فقط برای صفحاتی با محتوای کم این Field وجود داره. <sup class="ref"><a href="#r3">3</a></sup></p>
+<p>روش محاسبه اش؟</p>
+<p>نمیدونیم.</p>
+<p>چیزی که میشه با اطمینان گفت اینه که سیستم یه Score جدا با اسم OriginalContentScore نگه میداره.</p>
+<p>همین.</p>
+<h3>Autopilot</h3>
+<p>سه اسم دیگه هم تو اسناد هست:</p>
+<div class="doc-quote" dir="ltr">urlAutopilotScore</div>
+<div class="doc-quote" dir="ltr">deltaAutopilotScore</div>
+<div class="doc-quote" dir="ltr">siteAutopilotScore</div>
+<p>تنها توضیح روشنی که داریم اینه که siteAutopilotScore مقدار تجمیع شده Scoreهای URL برای یه Site Chunkه. <sup class="ref"><a href="#r4">4</a></sup><sup class="ref"><a href="#r5">5</a></sup></p>
+<p>اسم Autopilot خیلی راحت آدم رو میبره سمت Automation.</p>
+<p>ولی این تفسیر ماست.</p>
+<p>Documentation معنی Autopilot رو نگفته.</p>
+<p>پس من از استدلال اصلی بیرونش میذارم.</p>
+<p>دوباره همون قاعده.</p>
+<p>اسم Field توضیح عملکرد Field نیست.</p>
+<hr/>
+<h2 id="s5">5. از قضاوت انسان تا مدل های رتبه بندی</h2>
+<p>اینجا رسیدم به چیزی که به نظرم از حدس زدن اسم مدل مهم تره.</p>
+<p>آیا قضاوت انسان درباره کیفیت میتونه تبدیل به داده آموزش یه Ranking Model بشه؟</p>
+<p>اگه فقط Patent داشتیم، جوابم محدود بود.</p>
+<p>میگفتم این معماری ثبت شده.</p>
+<p>نه اینکه حتما تو Search لانچ شده.</p>
+<p>ولی این بار فقط Patent نداریم.</p>
+<h3>پتنت US8195654B1</h3>
+<p>این Patent متعلق به گوگل یه روش رو توضیح میده که Human Evaluator به یه Query و Document امتیاز میده. <sup class="ref"><a href="#r18">18</a></sup></p>
+<p>بعد از Query، Document و اطلاعاتی مثل Query Log سیگنال ساخته میشه.</p>
+<p>یه Statistical Model رابطه این سیگنال ها با Human Ratings رو یاد میگیره.</p>
+<p>بعد میتونه برای Query و Documentهای جدید Rating پیش بینی کنه.</p>
+<p>خود Patent میگه این Rating میتونه برای Refine کردن Ranking یا ارزیابی Search Engine استفاده بشه.</p>
+<p>قضاوت انسان اینجا داده آموزشیه، نه گزارش آخر کار.</p>
+<h3>پتنت US8442984B1</h3>
+<p>Patent دوم همین ایده رو در سطح Website توضیح میده. <sup class="ref"><a href="#r19">19</a></sup></p>
+<p>Rater چند صفحه از سایت رو میبینه و Quality Rating میده.</p>
+<p>بعد رابطه Rating با Website Signals مدل میشه.</p>
+<p>برای سایت هایی که Rater ندیده هم Modeled Rating تولید میشه.</p>
+<p>خود Patent بین مثال های Quality Factor از Originality، نسبت Original به Copied Content و Layout اسم میبره.</p>
+<p>و میگه Quality Rating میتونه برای ترتیب دادن Search Results استفاده بشه.</p>
+<h3>اگه فقط Patent داشتیم، همینجا میایستادم</h3>
+<p>Patent ثابت نمیکنه سیستم واقعا لانچ شده.</p>
+<p>شرکت ها کلی ایده Patent میکنن که ممکنه هیچ وقت اجرا نشن.</p>
+<p>ولی بعد به RankEmbed میرسیم.</p>
+<h3>RankEmbed</h3>
+<p>در رای مرحله Remedies مورخ 2 سپتامبر 2025، RankEmbed و RankEmbedBERT به عنوان Ranking Model معرفی شدن. <sup class="ref"><a href="#r7">7</a></sup></p>
+<p>متن رای دو منبع اصلی داده رو نام میبره.</p>
+<p>درصدی از 70 روز Search Log که Click و Query Data داخلشه.</p>
+<p>و Scoreهایی که Human Raterها تولید کردن و گوگل ازشون برای سنجش کیفیت نتایج ارگانیک استفاده میکنه.</p>
+<p>همون رای RankEmbed رو یه مدل AI-based و Deep Learning با درک قوی زبان طبیعی معرفی میکنه.</p>
+<p>RankEmbedBERT هم به خصوص برای Long-tail Queryها مفید بوده. <sup class="ref"><a href="#r7">7</a></sup></p>
+<p>اینجا دیگه از Patent حرف نمیزنیم.</p>
+<p>یه Ranking Model واقعی داریم که Human Rater Scores یکی از منابع داده اش بوده.</p>
+<p>آیا contentEffort با همین روش ساخته شده؟</p>
+<p>نمیدونم.</p>
+<p>AGC چطور؟</p>
+<p>باز هم نمیدونم.</p>
+<p>هیچ سندی اینها رو به RankEmbed وصل نمیکنه.</p>
+<p>ولی اصل استفاده از Human Rater Scores در داده یه Ranking Model واقعی، دیگه فقط یه معماری داخل Patent نیست.</p>
+<hr/>
+<h2 id="s6">6. درباره Gemini، جهت فلش رو برعکس نکنیم</h2>
+<p>اینجا تو تحقیق اولیه یه دام خیلی راحت وجود داشت.</p>
+<p>میشه سریع گفت:</p>
+<p>«پس Gemini داره صفحات Search رو قضاوت میکنه.»</p>
+<p>سندی که پیدا کردم این رو نمیگه.</p>
+<p>جهتی که سند نشون میده برعکسه.</p>
+<h3>ایمیل داخلی گوگل</h3>
+<p>در اسلایدهای شهادت کارشناس Plaintiffs، پروفسور Gregory Durrett، یه ایمیل داخلی گوگل به تاریخ 5 ژوئن 2024 نقل شده.</p>
+<p>اسلاید 40 منبع ایمیل رو اینطور نوشته:</p>
+<div class="doc-quote" dir="ltr">PXR0016 at -865</div>
+<p>متن خوانای ایمیل میگه با کمک Paul Haahr مجوز استفاده از چند Search Signal برای کمک به Gemini Pretraining گرفته شده. <sup class="ref"><a href="#r20">20</a></sup></p>
+<p>چند سیگنال Low Quality در سطح Page و Site هم بینشون بوده.</p>
+<p>دلیل استفاده هم داخل همون ایمیله.</p>
+<p>صفحات خوب و معتبر بیشتر وزن بگیرن.</p>
+<p>صفحات Spam و غیرقابل اعتماد کمتر.</p>
+<p>تیم هم نوشته روش هایی مثل Upsampling و Downsampling رو تست میکنه. <sup class="ref"><a href="#r20">20</a></sup></p>
+<p>پس چیزی که سند داریم اینه:</p>
+<div class="doc-quote" dir="ltr">Search Signals → Gemini Pretraining</div>
+<p>نه:</p>
+<div class="doc-quote" dir="ltr">Gemini → Search Quality Signals</div>
+<h3>رای Remedies هم یه تکه دیگه اضافه میکنه</h3>
+<p>رای 2 سپتامبر 2025 میگه Google Search مدل های پایه Gemini رو برای کاربردهای مخصوص Search پس آموزش میده. <sup class="ref"><a href="#r7">7</a></sup></p>
+<p>برای MAGIT هم از چیزی استفاده میشه که دادگاه اسمش رو Search data گذاشته.</p>
+<p>ولی خود رای یه محدودیت مهم رو هم گفته.</p>
+<p>نوع دقیق، حجم و اهمیت اون Search data کامل روشن نشده.</p>
+<p>من هیچ پل مستندی بین Gemini و contentEffort یا racterScores پیدا نکردم.</p>
+<p>ممکنه وجود داشته باشه؟</p>
+<p>نمیدونم.</p>
+<p>چیزی که امروز سند داریم جهت دیگه است.</p>
+<p>Search Signals برای Gemini Training.</p>
+<hr/>
+<h2 id="s7">7. چرا Policy روی AI بودن قفل نشده</h2>
+<p>وقتی این اسناد رو دونه دونه میخونی، موضع رسمی گوگل درباره AI Content قابل فهم تر میشه.</p>
+<p>برای برخورد با محتوای بد شاید اصلا لازم نباشه اول بفهمی نویسنده کی بوده.</p>
+<p>گوگل سال 2023 خودش این سوال رو مطرح کرد که Search چطور میتونه بفهمه از AI برای Spam استفاده شده. <sup class="ref"><a href="#r2">2</a></sup></p>
+<p>جوابش این نبود که یه AI Authorship Detector داریم.</p>
+<p>گفت سیستم های مختلف، از جمله SpamBrain، Patternها و Signalها رو بررسی میکنن تا Spam رو تشخیص بدن، فارغ از اینکه محتوا چطور ساخته شده.</p>
+<p>Spam Policies فعلی هم Scaled Content Abuse رو روی تولید تعداد زیادی Page با هدف اصلی دستکاری Ranking و نه کمک به کاربر تعریف میکنه. <sup class="ref"><a href="#r1">1</a></sup></p>
+<p>استفاده از Generative AI برای ساخت تعداد زیادی Page بدون افزودن ارزش یکی از مثال هاست.</p>
+<p>یعنی خود ابزار، موضوع اصلی Policy نیست.</p>
+<h3>چیزی که برای من عوض شد</h3>
+<p>قبلا سوال این بود:</p>
+<p>گوگل میفهمه چت جی پی تی نوشته یا نه؟</p>
+<p>الان سوال مهم تر برای من اینه:</p>
+<p>برای تصمیم گرفتن درباره یه صفحه، اصلا لازم داره این رو بفهمه؟</p>
+<p>یه Watermark واقعی داریم.</p>
+<p>یه AGC Classification Score در سطح سایت داریم.</p>
+<p>contentEffort و OriginalContentScore هم داریم.</p>
+<p>RankEmbed هم Human Rater Scores رو بین منابع داده اش داشته.</p>
+<p>اینا رو نباید یکی کرد.</p>
+<p>ولی بعد از دیدنشون، کل مسئله دیگه برای من به یه Detector خلاصه نمیشه.</p>
+<hr/>
+<h2 id="s8">8. قبل از چت بات ها، بازنویسی چند سایت تولید محتوای درست نبود</h2>
+<p>یه حرفی که این روزا زیاد میشنوم اینه:</p>
+<p>«قبل از چت جی پی تی هم نویسنده 5 تا سایت رو میخوند و بازنویسی میکرد. AI فقط همون کار رو بهتر انجام میده.»</p>
+<p>قسمت آخرش حتی میتونه درست باشه.</p>
+<p>اگه کار نویسنده این بوده که 5 نتیجه اول رو باز کنه و همون اطلاعات رو با جمله بندی تازه تحویل بده، یه مدل زبانی ممکنه سریع تر، تمیزتر و حتی خوش خوان تر این کار رو انجام بده.</p>
+<p>ولی یه سوال.</p>
+<p>کی گفته روش قبلی درست بوده؟</p>
+<p>رتبه گرفتن بعضی از اون صفحات هم جواب این سوال نیست.</p>
+<h3>سال 2011، قبل از چت جی پی تی</h3>
+<p>Amit Singhal سال 2011 برای توضیح نگاه پشت Panda یه مجموعه سوال منتشر کرد. <sup class="ref"><a href="#r9">9</a></sup></p>
+<p>آیا مقاله اطلاعات، گزارش، تحقیق یا تحلیل اصیل داره؟</p>
+<p>آیا نسبت به صفحات دیگه نتایج ارزش قابل توجهی اضافه میکنه؟</p>
+<p>آیا چیزی فراتر از اطلاعات بدیهی ارائه میده؟</p>
+<p>آیا محتوا با دقت و توجه ساخته شده یا شتاب زده و انبوه تولید شده؟</p>
+<p>سال 2011.</p>
+<p>یعنی مسئله اضافه نکردن چیز تازه، خیلی قبل از چت جی پی تی هم مسئله بوده.</p>
+<p>مدل زبانی این روش رو نساخته.</p>
+<p>فقط انجامش رو ارزون تر و سریع تر کرده.</p>
+<h3>سال 2013، جواب Matt Cutts به ترکیب چند سایت</h3>
+<p>از Matt Cutts پرسیدن آیا میشه تکه های کوچیکی از چند سایت برداشت، منبع داد و از ترکیبشون یه مقاله ساخت. <sup class="ref"><a href="#r10">10</a></sup></p>
+<p>نکته اصلی جوابش Added Value بود.</p>
+<p>جمع کردن تکه های منابع یه چیزه.</p>
+<p>ساختن مطلبی که واقعا چیزی به اطلاعات موجود اضافه کنه یه چیز دیگه.</p>
+<p>این نگاه بعدا هم عوض نشد.</p>
+<p>راهنمای Core Update سال 2019 دوباره پرسید اگه از منابع دیگه استفاده میکنی، فقط کپی و بازنویسی کردی یا ارزش و اصالت قابل توجهی اضافه شده؟ <sup class="ref"><a href="#r11">11</a></sup></p>
+<p>Spam Policy فعلی هم این مثال رو صریح آورده: <sup class="ref"><a href="#r1">1</a></sup></p>
+<div class="doc-quote" dir="ltr">stitching or combining content from different web pages without adding value</div>
+<p>پس مسئله بازنویسی و ترکیب بدون ارزش اضافه نه جدیده، نه مخصوص AI.</p>
+<h3>هوش مصنوعی بهتر از نویسنده انسانی مینویسه؟</h3>
+<p>کدوم نویسنده انسانی؟</p>
+<p>اگه کسیه که 5 نتیجه اول رو باز میکنه و حرف همونا رو دوباره مینویسه، بله.</p>
+<p>AI ممکنه خیلی بهتر ازش این کار رو انجام بده.</p>
+<p>ولی هنوز چیزی به اطلاعات موجود اضافه نشده.</p>
+<p>راهنمای فعلی People-first گوگل هنوز روی اطلاعات، گزارش، تحقیق و تحلیل اصیل و ارزش اضافه نسبت به صفحات دیگه تاکید داره. <sup class="ref"><a href="#r12">12</a></sup></p>
+<p>راهنمای جدید گوگل برای Search در عصر Generative AI مستقیم تره. <sup class="ref"><a href="#r13">13</a></sup></p>
+<p>میگه چیزی بسازید که unique و non-commodity باشه، تجربه و دیدگاه دست اول داشته باشه و صرفا چیزی نباشه که از حرف بقیه اینترنت یا خروجی ساده یه مدل مولد دوباره ساخته شده.</p>
+<p>پس برای من دعوا سر انسان و AI نیست.</p>
+<p>یه آدم هم میتونه محتوای بی ارزش بسازه.</p>
+<p>AI هم میتونه.</p>
+<p>سوال اینه:</p>
+<p>چی اضافه کردی؟</p>
+<hr/>
+<h2 id="s9">9. غنی کردن محتوا از چیزی که خود گوگل گفته</h2>
+<p>اینجا نمیخوام از خودم برای «محتوای خوب» فرمول بسازم.</p>
+<p>خود اسناد گوگل مثال دارن.</p>
+<p>تو راهنمای Reviewها از Evidence استفاده واقعی حرف زده شده. <sup class="ref"><a href="#r15">15</a></sup></p>
+<p>تصویر یا صدایی که نشون بده محصول واقعا استفاده شده.</p>
+<p>اندازه گیری کمی.</p>
+<p>مقایسه با گزینه های دیگه.</p>
+<p>مزایا و معایب بر پایه تحقیق.</p>
+<p>تفاوت واقعی بین گزینه ها.</p>
+<p>شواهد دست اول.</p>
+<p>این راهنما مخصوص Reviewهاست.</p>
+<p>پس من ازش فرمول عمومی Ranking درنمیارم.</p>
+<p>ولی برای فهم Added Value مثال خوبیه.</p>
+<p>برای من غنی کردن محتوا یعنی چیزی وارد صفحه بشه که اطلاعات بیشتری به کاربر بده یا ابهامش رو کمتر کنه.</p>
+<p>نه اینکه فقط قالب بیشتری اضافه کنیم.</p>
+<p>ویدیو به خودی خود ارزش نیست.</p>
+<p>جدول به خودی خود ارزش نیست.</p>
+<p>FAQ هم همینطور.</p>
+<p>اگه چیزی به پاسخ اضافه نمیکنه، فقط صفحه رو بلندتر کرده.</p>
+<hr/>
+<h2 id="s10">10. لینک سازی داخلی، چیزی که سند داریم و چیزی که من انجام میدم</h2>
+<p>اینجا دو چیز رو جدا میکنم.</p>
+<p>یکی چیزی که خود گوگل گفته.</p>
+<p>یکی روشی که خودم برای Internal Link دارم.</p>
+<h3>چیزی که سند داریم</h3>
+<p>راهنمای رسمی گوگل میگه Anchor خوب باید توصیفی، نسبتا کوتاه و مرتبط با صفحه مبدا و مقصد باشه. <sup class="ref"><a href="#r14">14</a></sup></p>
+<p>همون راهنما میگه کلمات قبل و بعد Link مهمن.</p>
+<p>صفحات مهم سایت هم باید Internal Link داشته باشن.</p>
+<p>از اون طرف توصیه میکنه Keywordها رو به زور داخل Anchor نچپونید و Linkها رو بدون Context پشت سر هم نذارید.</p>
+<p>این قسمت مستنده.</p>
+<h3>چیزی که من انجام میدم</h3>
+<p>من برای لینک داخلی اول رابطه بین دو صفحه رو نگاه میکنم.</p>
+<p>بعد Anchor.</p>
+<p>اگه صفحه مبدا واقعا به یه مفهوم رسیده و صفحه مقصد دقیقا همون مفهوم رو کامل تر توضیح میده، لینک طبیعی داریم.</p>
+<p>حالا اگه اسم دقیق همون مفهوم یه Exact Match Anchor باشه، من ازش فرار نمیکنم.</p>
+<p>Exact Match به خودی خود برای من مشکل نیست.</p>
+<p>مثلا اگه تو متن درباره «نقشه Redirectها» حرف میزنم و یه صفحه هم دقیقا درباره Redirect Mapping دارم، طبیعی ترین Anchor میتونه همون «نقشه Redirectها» باشه.</p>
+<p>قرار نیست فقط برای اینکه Exact شده، عبارت رو مصنوعی عوض کنم.</p>
+<p>مشکل برای من جای دیگه است.</p>
+<p>همون Anchor رو تو تعداد زیادی صفحه نامرتبط تکرار کنیم فقط چون میخوایم روی یه Keyword فشار بیاریم.</p>
+<p>اونجا دیگه رابطه واقعی بین صفحات تعیین کننده نیست.</p>
+<p>Keyword تعیین کننده شده.</p>
+<p>من فرمولی مثل 30% Exact، 30% Partial و بقیه Brand هم ندارم.</p>
+<p>سه چیز رو نگاه میکنم.</p>
+<p>صفحه مقصد واقعا درباره همین مفهومه؟</p>
+<p>کاربر تو همین نقطه از متن ممکنه به اون صفحه نیاز داشته باشه؟</p>
+<p>Anchor موضوع مقصد رو درست توضیح میده؟</p>
+<p>اگه جواب مثبته، لینک برای من منطقیه.</p>
+<p>این قسمت روش و برداشت خودمه.</p>
+<p>نمیگم گوگل یه فرمول Ranking به اسم «اول رابطه، بعد Anchor» منتشر کرده.</p>
+<p>ولی روشی که خودم استفاده میکنم با چیزی که تو راهنمای رسمی درباره Relevance، Anchor و Context گفته شده هم جهت است. <sup class="ref"><a href="#r14">14</a></sup></p>
+<hr/>
+<h2 id="s11">11. جواب نهایی این تحقیق</h2>
+<p>من این تحقیق رو با یه سوال شروع کردم.</p>
+<p>گوگل از کجا میفهمه یه متن رو AI نوشته؟</p>
+<p>الان جوابم یه «نه» ساده نیست.</p>
+<p>گوگل فناوری واقعی برای Watermark کردن متن تولیدی خودش داره.</p>
+<p>SynthID-Text روی پاسخ های Gemini و Gemini Advanced Watermark میذاره و سازوکار Detection اون هم در پژوهش نیچر مستند شده. <sup class="ref"><a href="#r16">16</a></sup></p>
+<p>ولی یه Universal Detector در Google Search که روی هر صفحه وب اجرا بشه و بگه نویسنده انسان بوده یا AI؟</p>
+<p>برای این هنوز سند عمومی ندارم.</p>
+<p>از اون طرف، تو Search چیزهای دیگه ای میبینیم.</p>
+<p>یه AGC Classification Score در سطح سایت.</p>
+<p>یه LLM-based effort estimation برای صفحات مقاله ای.</p>
+<p>OriginalContentScore.</p>
+<p>بعد RankEmbed که Human Rater Scores یکی از منابع داده اش بوده.</p>
+<p>و یه سند دیگه که استفاده از Search Signals و Low Quality Signals برای Gemini Pretraining رو نشون میده.</p>
+<p>اینا یه سیستم نیستن.</p>
+<p>من سندی ندارم که همه رو به هم وصل کنم.</p>
+<p>تفسیر من اینه که سوال «گوگل میفهمه نویسنده AI بوده یا نه» شاید برای تصمیم محتوایی سوال اصلی نباشه.</p>
+<p>چون قبل از اینکه بدونی نویسنده کیه، میشه درباره خود خروجی چیزهای مختلفی اندازه گرفت.</p>
+<p>این تفسیر منه.</p>
+<p>نه ادعای مستند درباره یه Pipeline واحد.</p>
+<h3>دقیق ترین جمله ای که حاضرم پایش بایستم</h3>
+<p>گفتن «گوگل هیچ راهی برای فهمیدن یا ارزیابی محتوای AI نداره» با اسنادی که الان داریم قابل دفاع نیست.</p>
+<p>گفتن «Google Search هر متن AI رو تشخیص میده و فقط به خاطر AI بودن رتبه اش رو پایین میاره» هم قابل دفاع نیست.</p>
+<p>هر کسی یکی از این دو جواب قطعی رو داد، اول ازش سند بخواه.</p>
+<h3>حرف شخصی من</h3>
+<p>یه سوءتفاهم رو همینجا جمع کنم.</p>
+<p>من مخالف هوش مصنوعی نیستم.</p>
+<p>خودم هر روز ازش استفاده میکنم.</p>
+<p>مشکل من یه چیز دیگه است.</p>
+<p>یه Field پیدا کنیم و چون اسمش جذابه، عملکردش رو خودمون بنویسیم.</p>
+<p>یه Patent پیدا کنیم و Deployment فرضش کنیم.</p>
+<p>یه سند دادگاه پیدا کنیم و دو سیستم رو که سند به هم وصل نکرده، خودمون به هم وصل کنیم.</p>
+<p>یه Detector هم یه عدد بده و اون عدد رو تبدیل کنیم به واقعیت.</p>
+<p>این تحقیق از همینجا شروع شد.</p>
+<p>میخواستم ببینم پشت جمله «گوگل میفهمه AI نوشته» واقعا چی داریم.</p>
+<p>الان جواب برای من جالب تر از بله و نه شده.</p>
+<p>racterScores و contentEffort تو Documentation هستن.</p>
+<p>OriginalContentScore هم جدا نگه داشته شده.</p>
+<p>RankEmbed یه Ranking Model واقعیه که Human Rater Scores یکی از منابع داده اش بوده.</p>
+<p>Gemini هم در Search پس آموزش میبینه.</p>
+<p>ولی بین اینها جاهای خالی زیادی داریم.</p>
+<p>من اون جاهای خالی رو با حدس پر نمیکنم.</p>
+<p>اگه فردا سند بهتری پیدا بشه، همین متن باید عوض بشه.</p>
+<p>کار تحقیق همینه.</p>
+<h3>این تحقیق چه چیزی رو ثابت نمیکنه</h3>
+<p>این قسمت رو عمدا میذارم.</p>
+<p>چون بدونش خیلی راحت میشه از همین اسناد چیزهایی ساخت که خود اسناد نگفتن.</p>
+<p>ثابت نمیکنه Google Search روی همه صفحات وب SynthID یا هر Detector عمومی دیگه ای اجرا میکنه.</p>
+<p>ثابت نمیکنه هر متن تولیدشده با AI دارای Watermark قابل تشخیصه. SynthID درباره Outputهاییه که با همون سازوکار Watermark شدن.</p>
+<p>ثابت نمیکنه AGC مخفف Artificially Generated Contentه. Documentation عمومی این مخفف رو باز نکرده.</p>
+<p>ثابت نمیکنه racterScores، contentEffort یا OriginalContentScore امروز با وزن مشخص تو Ranking همه Queryها استفاده میشن.</p>
+<p>ثابت نمیکنه contentEffort میزان تلاش انسانی، هزینه بازتولید یا احتمال AI بودن متن رو اندازه میگیره.</p>
+<p>ثابت نمیکنه Autopilot به Automation یا AI Content مربوطه. معنی اون هنوز تو Documentation عمومی روشن نیست.</p>
+<p>ثابت نمیکنه Patentهای Human Rating دقیقا همون معماری RankEmbed یا سیستم های فعلی گوگل هستن.</p>
+<p>Patent سابقه فنی ایده رو نشون میده، نه Deployment.</p>
+<p>ثابت نمیکنه Human Rater مستقیم رتبه یه URL خاص رو تغییر میده.</p>
+<p>چیزی که درباره RankEmbed سند داریم اینه که Scoreهای Rater یکی از منابع داده Model بودن.</p>
+<p>ثابت نمیکنه Gemini در Search، contentEffort یا AGC رو تولید میکنه.</p>
+<p>سندی که داریم جهت دیگه رو نشون میده.</p>
+<div class="doc-quote" dir="ltr">Search Signals → Gemini Pretraining</div>
+<p>ثابت نمیکنه AI Content ذاتا ضعیفه یا محتوای انسانی ذاتا بهتره.</p>
+<p>و ثابت نمیکنه گوگل فقط به دلیل AI بودن محتوا رتبه اون رو پایین میاره.</p>
+<p>Policy رسمی روی Abuse، Scale، Purpose و Added Value تمرکز داره.</p>
+<hr/>
+<section id="sources">
+<h2>منابع و اسناد</h2>
+<p>منابع رو تا جای ممکن به متن اصلی سند وصل کردم. برای Leak از آینه های عمومی مستندات استفاده شده، چون خود ساختار داخلی Google در دسترس عمومی نیست.</p>
+<div class="srcgroup">
+<h3>مستندات رسمی گوگل</h3>
+<ol class="srclist">
+<li id="r1"><span class="n">۱</span><span class="body"><span class="ttl ttl-en" dir="ltr">Spam policies for Google web search</span><span class="p">Google Search Central، نسخه فعلی، آخرین بروزرسانی ثبت شده در صفحه ۲۰۲۶ </span><a class="u" dir="ltr" href="https://developers.google.com/search/docs/essentials/spam-policies" rel="noopener noreferrer" target="_blank">https://developers.google.com/search/docs/essentials/spam-policies</a></span></li>
+<li id="r2"><span class="n">۲</span><span class="body"><span class="ttl ttl-en" dir="ltr">Google Search's guidance about AI-generated content</span><span class="p">Google Search Central Blog، ۲۰۲۳ </span><a class="u" dir="ltr" href="https://developers.google.com/search/blog/2023/02/google-search-and-ai-content" rel="noopener noreferrer" target="_blank">https://developers.google.com/search/blog/2023/02/google-search-and-ai-content</a></span></li>
+</ol>
+</div>
+<div class="srcgroup">
+<h3>آینه های مستندات Content Warehouse</h3>
+<ol class="srclist">
+<li id="r3"><span class="n">۳</span><span class="body"><span class="ttl ttl-en" dir="ltr">GoogleApi.ContentWarehouse.V1.Model.PerDocData</span><span class="p">نسخه ۰.۴.۰، شامل توضیح استفاده پروتکل در indexing و serving و فیلد OriginalContentScore </span><a class="u" dir="ltr" href="https://google-api-content-warehouse.hexdocs.pm/0.4.0/GoogleApi.ContentWarehouse.V1.Model.PerDocData.html" rel="noopener noreferrer" target="_blank">https://google-api-content-warehouse.hexdocs.pm/0.4.0/GoogleApi.ContentWarehouse.V1.Model.PerDocData.html</a></span></li>
+<li id="r4"><span class="n">۴</span><span class="body"><span class="ttl ttl-en" dir="ltr">QualityNsrNsrData</span><span class="p">نسخه ۰.۴.۰، شامل racterScores و siteAutopilotScore </span><a class="u" dir="ltr" href="https://google-api-content-warehouse.hexdocs.pm/0.4.0/GoogleApi.ContentWarehouse.V1.Model.QualityNsrNsrData.html" rel="noopener noreferrer" target="_blank">https://google-api-content-warehouse.hexdocs.pm/0.4.0/GoogleApi.ContentWarehouse.V1.Model.QualityNsrNsrData.html</a></span></li>
+<li id="r5"><span class="n">۵</span><span class="body"><span class="ttl ttl-en" dir="ltr">GoogleApi.ContentWarehouse.V1.Model.QualityNsrPQData</span><span class="p">نسخه ۰.۴.۰، شامل contentEffort، urlAutopilotScore و deltaAutopilotScore </span><a class="u" dir="ltr" href="https://google-api-content-warehouse.hexdocs.pm/0.4.0/GoogleApi.ContentWarehouse.V1.Model.QualityNsrPQData.html" rel="noopener noreferrer" target="_blank">https://google-api-content-warehouse.hexdocs.pm/0.4.0/GoogleApi.ContentWarehouse.V1.Model.QualityNsrPQData.html</a></span></li>
+<li id="r6"><span class="n">۶</span><span class="body"><span class="ttl ttl-en" dir="ltr">GoogleApi.ContentWarehouse.V1.Model.CompressedQualitySignals</span><span class="p">نسخه ۰.۴.۰، توضیح سیگنال های per-doc، preliminary scoring و pqDataProto </span><a class="u" dir="ltr" href="https://google-api-content-warehouse.hexdocs.pm/0.4.0/GoogleApi.ContentWarehouse.V1.Model.CompressedQualitySignals.html" rel="noopener noreferrer" target="_blank">https://google-api-content-warehouse.hexdocs.pm/0.4.0/GoogleApi.ContentWarehouse.V1.Model.CompressedQualitySignals.html</a></span></li>
+</ol>
+</div>
+<div class="srcgroup">
+<h3>اسناد دادگاه</h3>
+<ol class="srclist">
+<li id="r7"><span class="n">۷</span><span class="body"><span class="ttl ttl-en" dir="ltr">Redacted Memorandum Opinion, United States of America et al. v. Google LLC</span><span class="p">دادگاه منطقه ای ایالات متحده برای District of Columbia، رای مرحله Remedies، Document 1436، ثبت شده ۲ سپتامبر ۲۰۲۵، شامل RankEmbed، Human Rater Scores و Gemini Search post-training </span><a class="u" dir="ltr" href="https://docs.justia.com/cases/federal/district-courts/district-of-columbia/dcdce/1:2020cv03010/223205/1436" rel="noopener noreferrer" target="_blank">https://docs.justia.com/cases/federal/district-courts/district-of-columbia/dcdce/1:2020cv03010/223205/1436</a></span></li>
+</ol>
+</div>
+<div class="srcgroup">
+<h3>تحقیق قبلی</h3>
+<ol class="srclist">
+<li id="r8"><span class="n">۸</span><span class="body"><span class="ttl">تشخیص متن هوش مصنوعی، تحقیق قبلی درباره Detectorها و SynthID</span><span class="p">شهرام رهبری، ShahramDocs</span><a class="u" dir="ltr" href="https://shahramdocs.com/articles/ai-generated-text-detection" rel="noopener noreferrer" target="_blank">https://shahramdocs.com/articles/ai-generated-text-detection</a></span></li>
+</ol>
+</div>
+<div class="srcgroup">
+<h3>تولید محتوا و لینک داخلی</h3>
+<ol class="srclist">
+<li id="r9"><span class="n">۹</span><span class="body"><span class="ttl ttl-en" dir="ltr">More guidance on building high-quality sites</span><span class="p">Google Search Central Blog، Amit Singhal، Google Fellow، ۲۰۱۱ </span><a class="u" dir="ltr" href="https://developers.google.com/search/blog/2011/05/more-guidance-on-building-high-quality" rel="noopener noreferrer" target="_blank">https://developers.google.com/search/blog/2011/05/more-guidance-on-building-high-quality</a></span></li>
+<li id="r10"><span class="n">۱۰</span><span class="body"><span class="ttl ttl-en" dir="ltr">Is it a good practice to combine small portions of content from other sites?</span><span class="p">Google Webmasters، پاسخ Matt Cutts، ۲۰۱۳ </span><a class="u" dir="ltr" href="https://www.youtube.com/watch?v=Z13-yP3Zhns" rel="noopener noreferrer" target="_blank">https://www.youtube.com/watch?v=Z13-yP3Zhns</a></span></li>
+<li id="r11"><span class="n">۱۱</span><span class="body"><span class="ttl ttl-en" dir="ltr">What site owners should know about Google's core updates</span><span class="p">Google Search Central Blog، ۲۰۱۹ </span><a class="u" dir="ltr" href="https://developers.google.com/search/blog/2019/08/core-updates" rel="noopener noreferrer" target="_blank">https://developers.google.com/search/blog/2019/08/core-updates</a></span></li>
+<li id="r12"><span class="n">۱۲</span><span class="body"><span class="ttl ttl-en" dir="ltr">Creating helpful, reliable, people-first content</span><span class="p">Google Search Central، نسخه فعلی </span><a class="u" dir="ltr" href="https://developers.google.com/search/docs/fundamentals/creating-helpful-content" rel="noopener noreferrer" target="_blank">https://developers.google.com/search/docs/fundamentals/creating-helpful-content</a></span></li>
+<li id="r13"><span class="n">۱۳</span><span class="body"><span class="ttl ttl-en" dir="ltr">Google's guide to optimizing for generative AI features on Google Search</span><span class="p">Google Search Central، ۲۰۲۶، درباره unique و non-commodity content </span><a class="u" dir="ltr" href="https://developers.google.com/search/docs/fundamentals/ai-optimization-guide" rel="noopener noreferrer" target="_blank">https://developers.google.com/search/docs/fundamentals/ai-optimization-guide</a></span></li>
+<li id="r14"><span class="n">۱۴</span><span class="body"><span class="ttl ttl-en" dir="ltr">SEO link best practices for Google</span><span class="p">Google Search Central، Anchor text، Context و Internal Links </span><a class="u" dir="ltr" href="https://developers.google.com/search/docs/crawling-indexing/links-crawlable" rel="noopener noreferrer" target="_blank">https://developers.google.com/search/docs/crawling-indexing/links-crawlable</a></span></li>
+<li id="r15"><span class="n">۱۵</span><span class="body"><span class="ttl ttl-en" dir="ltr">Write high quality reviews</span><span class="p">Google Search Central، نمونه های عملی Evidence و Original Research </span><a class="u" dir="ltr" href="https://developers.google.com/search/docs/specialty/ecommerce/write-high-quality-reviews" rel="noopener noreferrer" target="_blank">https://developers.google.com/search/docs/specialty/ecommerce/write-high-quality-reviews</a></span></li>
+</ol>
+</div>
+<div class="srcgroup">
+<h3>تشخیص، مدل های Ranking و اسناد تکمیلی</h3>
+<ol class="srclist">
+<li id="r16"><span class="n">۱۶</span><span class="body"><span class="ttl ttl-en" dir="ltr">Scalable watermarking for identifying large language model outputs</span><span class="p">Nature، Google DeepMind و Google، ۲۰۲۴، SynthID-Text، آزمایش نزدیک ۲۰ میلیون پاسخ و Production روی Gemini </span><a class="u" dir="ltr" href="https://www.nature.com/articles/s41586-024-08025-4" rel="noopener noreferrer" target="_blank">https://www.nature.com/articles/s41586-024-08025-4</a></span></li>
+<li id="r17"><span class="n">۱۷</span><span class="body"><span class="ttl ttl-en" dir="ltr">EP4435640A1, Multi-stage watermarking of a digital object generated by a machine learning model</span><span class="p">Patent Application، انتشار ۲۵ سپتامبر ۲۰۲۴، وضعیت Pending، Original Assignee شرکت DeepMind Technologies Ltd و Current Assignee در Google Patents شرکت GDM Holding LLC </span><a class="u" dir="ltr" href="https://patents.google.com/patent/EP4435640A1/en" rel="noopener noreferrer" target="_blank">https://patents.google.com/patent/EP4435640A1/en</a><span class="p">نسخه های منتشرشده خانواده، <a class="u" dir="ltr" href="https://patents.google.com/patent/EP4435640A1/en" rel="noopener noreferrer" target="_blank">EP4435640A1</a>، <a class="u" dir="ltr" href="https://patents.google.com/patent/WO2024194341A1/en" rel="noopener noreferrer" target="_blank">WO2024194341A1</a> و <a class="u" dir="ltr" href="https://patents.google.com/patent/US20240320529A1/en" rel="noopener noreferrer" target="_blank">US20240320529A1</a></span></span></li>
+<li id="r18"><span class="n">۱۸</span><span class="body"><span class="ttl ttl-en" dir="ltr">US8195654B1, Prediction of human ratings or rankings of information retrieval quality</span><span class="p">Google LLC، Patent درباره آموزش Statistical Model با Human Ratings و Objective Signals برای پیش بینی Rating جفت Query و Document </span><a class="u" dir="ltr" href="https://patents.google.com/patent/US8195654B1/en" rel="noopener noreferrer" target="_blank">https://patents.google.com/patent/US8195654B1/en</a></span></li>
+<li id="r19"><span class="n">۱۹</span><span class="body"><span class="ttl ttl-en" dir="ltr">US8442984B1, Website quality signal generation</span><span class="p">Google LLC، Patent درباره Human Website Ratings، Website Signals و تولید Modeled Quality Rating برای سایت های دیده نشده </span><a class="u" dir="ltr" href="https://patents.google.com/patent/US8442984B1/en" rel="noopener noreferrer" target="_blank">https://patents.google.com/patent/US8442984B1/en</a></span></li>
+<li id="r20"><span class="n">۲۰</span><span class="body"><span class="ttl ttl-en" dir="ltr">Demonstrative Exhibit PXRD003, Testimony of Prof. Gregory Durrett</span><span class="p">اسلایدهای شهادت کارشناس Plaintiffs، ۲۱ آوریل ۲۰۲۵، اسلاید ۴۰، نقل کننده ایمیل داخلی Google با ارجاع PXR0016 at -865 </span><a class="u" dir="ltr" href="https://www.justice.gov/media/1397376/dl" rel="noopener noreferrer" target="_blank">https://www.justice.gov/media/1397376/dl</a></span></li>
+</ol>
+</div>
+</section>
+<section id="doc-stamp">
+<h2>مهر سند</h2>
+<div class="card c-note">
+<p>20 منبع بررسی شده.</p>
+<p>8 سند رسمی گوگل.</p>
+<p>4 مستند Content Warehouse.</p>
+<p>2 سند دادگاه.</p>
+<p>3 Patent.</p>
+<p>1 پژوهش نیچر.</p>
+<p>1 ویدئوی Google Webmasters.</p>
+<p>1 تحقیق قبلی.</p>
+</div>
+<div class="card c-stop">
+<span class="label">قاعده ثابت این مجموعه</span>
+<p>اسم یه Field، وجود یه Patent یا حتی دیدن یه سیستم داخل اسناد، به تنهایی معنی کامل، استفاده فعلی یا وزن اون در Ranking رو ثابت نمیکنه.</p>
+<p>هر ادعا فقط تا جایی جلو میره که سند اجازه میده.</p>
+<p>بیشتر از اون دیگه تحقیق نیست. حدسه.</p>
+</div>
+</section>
+</div>
+</div>
+</article>
+</main>
+<footer>
+<div class="wrap">
+<div class="col">
+<p>نوشته شهرام رهبری. اگر جایی از این متن اشتباه است یا سندی رو بد خوانده ام، خوشحال میشوم بگویید، نسخه بعدی اصلاح میشه.</p>
+<p>
+<a href="https://t.me/ShahramRahbari" rel="noopener noreferrer" target="_blank">تلگرام</a> ·
+ <a href="https://www.linkedin.com/in/shahramrahbari" rel="noopener noreferrer" target="_blank">لینکدین</a>
+</p>
+</div>
+</div>
+</footer>
+<a aria-label="بازگشت به بالای صفحه" href="#top" id="totop">↑</a>
+<script>
+(function(){
+  var bar = document.querySelector('#bar > i');
+  var top = document.getElementById('totop');
+  var ticking = false;
+  function upd(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    var p = max > 0 ? (h.scrollTop || document.body.scrollTop) / max : 0;
+    if(bar) bar.style.width = (p*100).toFixed(2) + '%';
+    if(top){ if(h.scrollTop > 900){ top.classList.add('on'); } else { top.classList.remove('on'); } }
+    ticking = false;
+  }
+  window.addEventListener('scroll', function(){
+    if(!ticking){ window.requestAnimationFrame(upd); ticking = true; }
+  }, {passive:true});
+  upd();
+})();
+</script>
+</body>
+</html>
